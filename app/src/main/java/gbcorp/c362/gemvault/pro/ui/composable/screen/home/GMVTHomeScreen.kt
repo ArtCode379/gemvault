@@ -6,11 +6,6 @@ import gbcorp.c362.gemvault.pro.data.model.ProductCategory
 import gbcorp.c362.gemvault.pro.ui.composable.shared.GMVTContentWrapper
 import gbcorp.c362.gemvault.pro.ui.composable.shared.GMVTEmptyView
 import gbcorp.c362.gemvault.pro.ui.state.GMVTDataUiState
-import gbcorp.c362.gemvault.pro.ui.theme.BackgroundLight
-import gbcorp.c362.gemvault.pro.ui.theme.BorderGray
-import gbcorp.c362.gemvault.pro.ui.theme.Charcoal
-import gbcorp.c362.gemvault.pro.ui.theme.Gold
-import gbcorp.c362.gemvault.pro.ui.theme.SurfaceWhite
 import gbcorp.c362.gemvault.pro.ui.viewmodel.GMVTProductViewModel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,25 +15,26 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Diamond
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -54,6 +50,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -89,7 +86,7 @@ private fun HomeContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(BackgroundLight)
+            .background(MaterialTheme.colorScheme.background)
     ) {
         GMVTContentWrapper(
             dataState = productsState,
@@ -100,18 +97,12 @@ private fun HomeContent(
                     products.filter { it.category == selectedCategory }
                 else products
 
-                androidx.compose.foundation.lazy.grid.LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    contentPadding = PaddingValues(bottom = 16.dp),
+                LazyColumn(
+                    contentPadding = PaddingValues(bottom = 24.dp),
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    item(span = { androidx.compose.foundation.lazy.grid.GridItemSpan(2) }) {
-                        FeaturedCarousel(
-                            products = featured,
-                            onProductClick = onNavigateToProductDetails
-                        )
-                    }
-                    item(span = { androidx.compose.foundation.lazy.grid.GridItemSpan(2) }) {
+                    // Category row — moved to top (section reorder)
+                    item {
                         CategoryRow(
                             selectedCategory = selectedCategory,
                             onCategorySelected = { cat ->
@@ -119,8 +110,17 @@ private fun HomeContent(
                             }
                         )
                     }
+                    // Featured carousel — below categories
+                    item {
+                        FeaturedCarousel(
+                            products = featured,
+                            onProductClick = onNavigateToProductDetails
+                        )
+                    }
+                    item { Spacer(Modifier.height(8.dp)) }
+                    // Large-card list (was 2-column grid)
                     items(filtered) { product ->
-                        ProductCard(
+                        LargeProductCard(
                             product = product,
                             onClick = { onNavigateToProductDetails(product.id) }
                         )
@@ -157,7 +157,9 @@ private fun FeaturedCarousel(
             state = pagerState,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(220.dp)
+                .height(210.dp)
+                .padding(horizontal = 16.dp)
+                .clip(RoundedCornerShape(20.dp))
         ) { page ->
             val product = products[page]
             Box(
@@ -174,7 +176,7 @@ private fun FeaturedCarousel(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Charcoal.copy(alpha = 0.35f))
+                        .background(Color(0xFF0D2A1E).copy(alpha = 0.45f))
                 )
                 Column(
                     modifier = Modifier
@@ -184,44 +186,53 @@ private fun FeaturedCarousel(
                     Text(
                         text = product.title,
                         style = MaterialTheme.typography.titleLarge,
-                        color = Color.White
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
                     )
+                    Spacer(Modifier.height(4.dp))
                     Text(
-                        text = "£${String.format("%.2f", product.price)}",
+                        text = "£${String.format("%.0f", product.price)}",
                         style = MaterialTheme.typography.titleMedium,
-                        color = Gold
+                        color = MaterialTheme.colorScheme.primaryContainer
                     )
                 }
             }
         }
 
+        // Pill-style page indicator
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp),
+                .padding(vertical = 10.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             repeat(products.size) { index ->
+                val isActive = pagerState.currentPage == index
                 Box(
                     modifier = Modifier
                         .padding(horizontal = 3.dp)
-                        .size(if (pagerState.currentPage == index) 8.dp else 6.dp)
-                        .clip(CircleShape)
-                        .background(if (pagerState.currentPage == index) Gold else BorderGray)
+                        .height(6.dp)
+                        .width(if (isActive) 20.dp else 6.dp)
+                        .clip(RoundedCornerShape(3.dp))
+                        .background(
+                            if (isActive) MaterialTheme.colorScheme.primary
+                            else MaterialTheme.colorScheme.outline
+                        )
                 )
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CategoryRow(
     selectedCategory: ProductCategory?,
     onCategorySelected: (ProductCategory) -> Unit,
 ) {
     LazyRow(
-        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(ProductCategory.entries) { category ->
@@ -235,66 +246,95 @@ private fun CategoryRow(
                     )
                 },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = Gold,
-                    selectedLabelColor = Charcoal,
-                    containerColor = SurfaceWhite,
-                    labelColor = Charcoal
+                    selectedContainerColor = MaterialTheme.colorScheme.primary,
+                    selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    labelColor = MaterialTheme.colorScheme.onSurfaceVariant
                 ),
                 border = FilterChipDefaults.filterChipBorder(
                     enabled = true,
                     selected = selectedCategory == category,
-                    borderColor = BorderGray,
-                    selectedBorderColor = Gold
-                )
+                    borderColor = MaterialTheme.colorScheme.outline,
+                    selectedBorderColor = MaterialTheme.colorScheme.primary
+                ),
+                shape = RoundedCornerShape(8.dp)
             )
         }
     }
 }
 
 @Composable
-private fun ProductCard(
+private fun LargeProductCard(
     product: Product,
     onClick: () -> Unit,
 ) {
-    Card(
+    ElevatedCard(
         modifier = Modifier
-            .padding(6.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth()
             .clickable { onClick() },
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = SurfaceWhite),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+        shape = RoundedCornerShape(28.dp),
+        colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 3.dp)
     ) {
         Column {
+            // Accent header strip
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(4.dp)
+                    .background(MaterialTheme.colorScheme.primary)
+            )
+            // Prominent top image
             AsyncImage(
                 model = product.imageUrl,
                 contentDescription = product.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(1f)
-                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+                    .height(220.dp)
             )
-            Column(modifier = Modifier.padding(12.dp)) {
-                Text(
-                    text = stringResource(product.category.titleRes),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = Gold
-                )
-                Spacer(Modifier.height(4.dp))
+            Column(modifier = Modifier.padding(16.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(product.category.titleRes),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    // Icon decoration
+                    Box(
+                        modifier = Modifier
+                            .size(28.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(MaterialTheme.colorScheme.primaryContainer),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Diamond,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                }
+                Spacer(Modifier.height(6.dp))
                 Text(
                     text = product.title,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Charcoal,
-                    minLines = 2,
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
-                Spacer(Modifier.height(6.dp))
+                Spacer(Modifier.height(8.dp))
                 Text(
-                    text = "£${String.format("%.2f", product.price)}",
+                    text = "£${String.format("%.0f", product.price)}",
                     style = MaterialTheme.typography.titleMedium,
-                    color = Gold
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold
                 )
             }
         }

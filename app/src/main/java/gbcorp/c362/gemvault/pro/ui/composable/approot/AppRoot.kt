@@ -3,10 +3,10 @@ package gbcorp.c362.gemvault.pro.ui.composable.approot
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.rounded.LocalMall
+import androidx.compose.material.icons.rounded.Receipt
+import androidx.compose.material.icons.rounded.ShoppingBag
+import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -32,22 +32,22 @@ import kotlin.reflect.KClass
 private val navigationItems: List<BottomNavItem> = listOf(
     BottomNavItem(
         titleRes = R.string.bottom_bar_nav_item_home_title,
-        icon = Icons.Default.Home,
+        icon = Icons.Rounded.LocalMall,
         route = NavRoute.Home,
     ),
     BottomNavItem(
         titleRes = R.string.bottom_bar_nav_item_cart_title,
-        icon = Icons.Default.ShoppingCart,
+        icon = Icons.Rounded.ShoppingBag,
         route = NavRoute.Cart,
     ),
     BottomNavItem(
         titleRes = R.string.bottom_bar_nav_item_orders_title,
-        icon = Icons.Default.CalendarToday,
+        icon = Icons.Rounded.Receipt,
         route = NavRoute.Orders,
     ),
     BottomNavItem(
         titleRes = R.string.bottom_bar_nav_item_settings_title,
-        icon = Icons.Default.Settings,
+        icon = Icons.Rounded.Tune,
         route = NavRoute.Settings,
     ),
 )

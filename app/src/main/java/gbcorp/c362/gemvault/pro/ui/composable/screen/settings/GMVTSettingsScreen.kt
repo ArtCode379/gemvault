@@ -1,16 +1,7 @@
 package gbcorp.c362.gemvault.pro.ui.composable.screen.settings
 
 import gbcorp.c362.gemvault.pro.R
-import gbcorp.c362.gemvault.pro.ui.theme.BackgroundLight
-import gbcorp.c362.gemvault.pro.ui.theme.BorderGray
-import gbcorp.c362.gemvault.pro.ui.theme.Charcoal
-import gbcorp.c362.gemvault.pro.ui.theme.Gold
-import gbcorp.c362.gemvault.pro.ui.theme.MutedGray
-import gbcorp.c362.gemvault.pro.ui.theme.SurfaceWhite
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,11 +14,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ChevronRight
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Language
-import androidx.compose.material.icons.outlined.SupportAgent
-import androidx.compose.material3.Card
+import androidx.compose.material.icons.rounded.AutoAwesome
+import androidx.compose.material.icons.rounded.VerifiedUser
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -37,85 +26,60 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun SettingsScreen(modifier: Modifier = Modifier) {
-    val context = LocalContext.current
-
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(BackgroundLight)
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
         Text(
-            text = "About",
+            text = "Application",
             style = MaterialTheme.typography.labelLarge,
-            color = MutedGray,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp)
         )
-        Card(
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = SurfaceWhite),
-            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+        ElevatedCard(
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface),
+            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
         ) {
             Column {
                 SettingsRow(
-                    icon = Icons.Outlined.Info,
+                    icon = Icons.Rounded.AutoAwesome,
                     label = stringResource(R.string.settings_screen_company_label),
-                    value = "AMA JEWELLERS LTD"
+                    value = stringResource(R.string.app_name)
                 )
                 HorizontalDivider(
                     modifier = Modifier.padding(start = 56.dp),
-                    color = BorderGray
+                    color = MaterialTheme.colorScheme.outline,
+                    thickness = 0.5.dp
                 )
                 SettingsRow(
-                    icon = Icons.Outlined.Language,
+                    icon = Icons.Rounded.VerifiedUser,
                     label = stringResource(R.string.settings_screen_version_label),
                     value = stringResource(R.string.app_version)
                 )
             }
         }
 
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(48.dp))
 
         Text(
-            text = "Support",
-            style = MaterialTheme.typography.labelLarge,
-            color = MutedGray,
-            modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp)
-        )
-        Card(
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = SurfaceWhite),
-            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
-        ) {
-            SettingsRowClickable(
-                icon = Icons.Outlined.SupportAgent,
-                label = stringResource(R.string.settings_screen_customer_support_label),
-                onClick = {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://aamajewellers.uk"))
-                    context.startActivity(intent)
-                }
-            )
-        }
-
-        Spacer(Modifier.height(40.dp))
-
-        Text(
-            text = "Ama Jewellers Boutique",
+            text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.bodyMedium,
-            color = BorderGray,
+            color = MaterialTheme.colorScheme.outline,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
         Text(
-            text = "Curators of Fine Timepieces & Exquisite Jewellery",
+            text = "v${stringResource(R.string.app_version)}",
             style = MaterialTheme.typography.labelSmall,
-            color = BorderGray,
+            color = MaterialTheme.colorScheme.outline,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
     }
@@ -130,14 +94,14 @@ private fun SettingsRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 14.dp),
+            .padding(horizontal = 16.dp, vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = Gold,
-            modifier = Modifier.size(22.dp)
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(24.dp)
         )
         Column(
             modifier = Modifier
@@ -147,49 +111,13 @@ private fun SettingsRow(
             Text(
                 text = label,
                 style = MaterialTheme.typography.bodyMedium,
-                color = Charcoal
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
         Text(
             text = value,
             style = MaterialTheme.typography.bodyMedium,
-            color = MutedGray
-        )
-    }
-}
-
-@Composable
-private fun SettingsRowClickable(
-    icon: ImageVector,
-    label: String,
-    onClick: () -> Unit,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() }
-            .padding(horizontal = 16.dp, vertical = 14.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = Gold,
-            modifier = Modifier.size(22.dp)
-        )
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodyMedium,
-            color = Charcoal,
-            modifier = Modifier
-                .weight(1f)
-                .padding(start = 16.dp)
-        )
-        Icon(
-            imageVector = Icons.Outlined.ChevronRight,
-            contentDescription = null,
-            tint = MutedGray,
-            modifier = Modifier.size(20.dp)
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }

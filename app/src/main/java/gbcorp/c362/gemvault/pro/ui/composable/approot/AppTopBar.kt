@@ -2,14 +2,14 @@ package gbcorp.c362.gemvault.pro.ui.composable.approot
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.DeleteSweep
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -38,10 +38,11 @@ fun AppTopBar(
     val isCartScreen = currentDestination?.hasRoute(route = NavRoute.Cart::class) == true
     val canNavigateBack = currentDestination.matchesAnyRoute(canNavigateBackRoutes)
 
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = {
             Text(
-                text = getTitle(currentDestination)?.let { stringResource(it) }.orEmpty()
+                text = getTitle(currentDestination)?.let { stringResource(it) }.orEmpty(),
+                style = MaterialTheme.typography.titleLarge
             )
         },
 
@@ -52,13 +53,13 @@ fun AppTopBar(
                     enabled = isCartNotEmpty,
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Delete,
+                        imageVector = Icons.Rounded.DeleteSweep,
                         contentDescription = "Clear Cart",
-                        modifier = Modifier.size(24.dp),
+                        modifier = Modifier.size(26.dp),
                         tint = if (isCartNotEmpty)
-                            MaterialTheme.colorScheme.onPrimary
+                            MaterialTheme.colorScheme.onPrimaryContainer
                         else
-                            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f),
+                            MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.4f),
                     )
                 }
             }
@@ -68,17 +69,17 @@ fun AppTopBar(
             if (canNavigateBack) {
                 IconButton(onClick = onNavigateBack) {
                     Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                         contentDescription = "Navigate Back",
-                        tint = MaterialTheme.colorScheme.onPrimary,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                 }
             }
         },
 
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         ),
     )
 }

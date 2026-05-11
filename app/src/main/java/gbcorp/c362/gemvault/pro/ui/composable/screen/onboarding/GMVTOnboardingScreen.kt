@@ -1,10 +1,5 @@
 package gbcorp.c362.gemvault.pro.ui.composable.screen.onboarding
 
-import gbcorp.c362.gemvault.pro.ui.theme.BackgroundLight
-import gbcorp.c362.gemvault.pro.ui.theme.BorderGray
-import gbcorp.c362.gemvault.pro.ui.theme.Charcoal
-import gbcorp.c362.gemvault.pro.ui.theme.Gold
-import gbcorp.c362.gemvault.pro.ui.theme.MutedGray
 import gbcorp.c362.gemvault.pro.ui.viewmodel.GMVTOnboardingVM
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,13 +11,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,7 +26,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -48,19 +43,24 @@ private data class OnboardingSlide(
 
 private val slides = listOf(
     OnboardingSlide(
-        imageUrl = "https://i.pinimg.com/originals/5b/35/05/5b3505ba50d1a3f1d9e219f931870962.jpg",
-        title = "Curated Fine Jewellery",
-        description = "Discover an exclusive collection of handcrafted diamond rings, sapphire earrings, and pearl necklaces — each piece a testament to timeless craftsmanship."
+        imageUrl = "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800",
+        title = "Flawless Gems, Perfectly Curated",
+        description = "Step into GemVault — where each diamond, emerald, and sapphire is individually graded, hand-selected, and certified for extraordinary brilliance."
     ),
     OnboardingSlide(
-        imageUrl = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjQvoEQwEHyS0Pmna8g2eOsYFcDsvAFbjqYEmVvPK7VGEVrSux3PRJEqG-yEDIm_ZV6Su2QTjK9IfxvVOe1PNwlFYxzP2EXO0Oq-hYFIkXDGAax5JnS2slJthRfz3qIy0Dmj6mij5Jl5XHHfXLdlXtjtVvs3asETejraFRnTd1B-96QgSL94Fu0mkI2/s1366/Christies_The%20Collection%20of%20a%20Lifetime.jpg",
-        title = "Exceptional Timepieces",
-        description = "Explore our selection of luxury Swiss watches, from elegant dress watches to precision chronographs. Heritage meets horological artistry."
+        imageUrl = "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=800",
+        title = "Heirloom Timepieces",
+        description = "Our horological gallery spans centuries of craftsmanship — from vintage pocket watches to contemporary perpetual calendars, each movement a marvel of precision."
     ),
     OnboardingSlide(
-        imageUrl = "https://www.vintagewatchcompany.com/img/db/slideshow/slidehomepage-shop-front.jpg",
-        title = "Reserve Your Piece",
-        description = "Browse, select, and reserve your chosen jewellery or timepiece. Our specialists will have it waiting for you at the boutique within 24 hours."
+        imageUrl = "https://images.unsplash.com/photo-1573408301185-9519f7872b58?w=800",
+        title = "Bespoke Vault Service",
+        description = "Reserve any piece from our vault collection for secure in-boutique collection, presented with authentication certificates and luxury packaging."
+    ),
+    OnboardingSlide(
+        imageUrl = "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800",
+        title = "White-Glove Expertise",
+        description = "Our certified gemologists and master watchmakers offer complimentary valuations, custom resizing, and full restoration for every GemVault acquisition."
     ),
 )
 
@@ -83,7 +83,7 @@ fun OnboardingScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(BackgroundLight),
+            .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         HorizontalPager(
@@ -95,7 +95,7 @@ fun OnboardingScreen(
             val slide = slides[page]
             Column(
                 modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.Start
             ) {
                 AsyncImage(
                     model = slide.imageUrl,
@@ -104,49 +104,57 @@ fun OnboardingScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
+                        .clip(RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
                 )
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 32.dp, vertical = 24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .background(MaterialTheme.colorScheme.background)
+                        .padding(horizontal = 28.dp, vertical = 20.dp),
+                    horizontalAlignment = Alignment.Start
                 ) {
                     Text(
                         text = slide.title,
                         style = MaterialTheme.typography.headlineLarge,
-                        color = Charcoal,
-                        textAlign = TextAlign.Center
+                        color = MaterialTheme.colorScheme.onBackground,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Start
                     )
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(10.dp))
                     Text(
                         text = slide.description,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MutedGray,
-                        textAlign = TextAlign.Center
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Start
                     )
                 }
             }
         }
 
-        // Dot indicators
+        // Pill-style page indicator
         Row(
-            modifier = Modifier.padding(vertical = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(vertical = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             repeat(slides.size) { index ->
+                val isActive = pagerState.currentPage == index
                 Box(
                     modifier = Modifier
-                        .size(if (pagerState.currentPage == index) 10.dp else 7.dp)
-                        .clip(CircleShape)
-                        .background(if (pagerState.currentPage == index) Gold else BorderGray)
+                        .height(8.dp)
+                        .width(if (isActive) 24.dp else 8.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(
+                            if (isActive) MaterialTheme.colorScheme.primary
+                            else MaterialTheme.colorScheme.outline
+                        )
                 )
             }
         }
 
-        // Button
-        Box(modifier = Modifier.padding(horizontal = 24.dp, vertical = 24.dp)) {
-            Button(
+        // Action button
+        Box(modifier = Modifier.padding(horizontal = 28.dp, vertical = 20.dp)) {
+            FilledTonalButton(
                 onClick = {
                     if (pagerState.currentPage < slides.size - 1) {
                         scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
@@ -156,14 +164,13 @@ fun OnboardingScreen(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp),
-                shape = RoundedCornerShape(28.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Charcoal)
+                    .height(52.dp),
+                shape = RoundedCornerShape(16.dp),
             ) {
                 Text(
-                    text = if (pagerState.currentPage < slides.size - 1) "NEXT" else "GET STARTED",
+                    text = if (pagerState.currentPage < slides.size - 1) "CONTINUE" else "ENTER THE VAULT",
                     style = MaterialTheme.typography.labelLarge,
-                    color = Gold
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
         }

@@ -9,30 +9,30 @@ import androidx.compose.ui.unit.sp
 val Typography = Typography(
     displayLarge = TextStyle(
         fontFamily = FontFamily.Serif,
-        fontWeight = FontWeight.Light,
-        fontSize = 32.sp,
-        lineHeight = 40.sp,
+        fontWeight = FontWeight.Bold,
+        fontSize = 36.sp,
+        lineHeight = 44.sp,
         letterSpacing = 1.sp
     ),
     headlineLarge = TextStyle(
         fontFamily = FontFamily.Serif,
-        fontWeight = FontWeight.Light,
-        fontSize = 24.sp,
-        lineHeight = 32.sp,
+        fontWeight = FontWeight.Bold,
+        fontSize = 28.sp,
+        lineHeight = 36.sp,
         letterSpacing = 0.5.sp
     ),
     headlineMedium = TextStyle(
         fontFamily = FontFamily.Serif,
-        fontWeight = FontWeight.Normal,
-        fontSize = 20.sp,
-        lineHeight = 28.sp,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 23.sp,
+        lineHeight = 30.sp,
         letterSpacing = 0.5.sp
     ),
     titleLarge = TextStyle(
         fontFamily = FontFamily.Serif,
-        fontWeight = FontWeight.Normal,
-        fontSize = 18.sp,
-        lineHeight = 26.sp,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 21.sp,
+        lineHeight = 28.sp,
         letterSpacing = 0.5.sp
     ),
     titleMedium = TextStyle(
@@ -52,8 +52,8 @@ val Typography = Typography(
     bodyMedium = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
-        lineHeight = 22.sp,
+        fontSize = 13.sp,
+        lineHeight = 20.sp,
         letterSpacing = 0.2.sp
     ),
     labelLarge = TextStyle(
@@ -61,13 +61,13 @@ val Typography = Typography(
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
         lineHeight = 20.sp,
-        letterSpacing = 1.sp
+        letterSpacing = 1.5.sp
     ),
     labelSmall = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
+        fontSize = 10.sp,
+        lineHeight = 15.sp,
         letterSpacing = 0.5.sp
     )
 )

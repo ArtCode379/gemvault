@@ -6,20 +6,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import gbcorp.c362.gemvault.pro.R
 import gbcorp.c362.gemvault.pro.data.entity.GMVTOrderEntity
-import gbcorp.c362.gemvault.pro.ui.theme.Charcoal
-import gbcorp.c362.gemvault.pro.ui.theme.Gold
-import gbcorp.c362.gemvault.pro.ui.theme.MutedGray
 
 @Composable
 fun CheckoutDialog(
@@ -32,7 +30,8 @@ fun CheckoutDialog(
             Text(
                 text = stringResource(R.string.checkout_dialog_title),
                 style = MaterialTheme.typography.headlineMedium,
-                color = Charcoal,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -42,7 +41,7 @@ fun CheckoutDialog(
                 Text(
                     text = stringResource(R.string.checkout_dialog_order_number, order.orderNumber),
                     style = MaterialTheme.typography.titleMedium,
-                    color = Gold,
+                    color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -50,29 +49,28 @@ fun CheckoutDialog(
                 Text(
                     text = stringResource(R.string.checkout_dialog_processing_message),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MutedGray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
         },
         confirmButton = {
-            Button(
+            FilledTonalButton(
                 onClick = onConfirm,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
-                shape = RoundedCornerShape(25.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Charcoal)
+                shape = RoundedCornerShape(16.dp),
             ) {
                 Text(
-                    text = "VIEW MY ORDERS",
+                    text = "VIEW MY ACQUISITIONS",
                     style = MaterialTheme.typography.labelLarge,
-                    color = Gold
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
         },
-        shape = RoundedCornerShape(16.dp),
-        containerColor = MaterialTheme.colorScheme.surface
+        shape = RoundedCornerShape(20.dp),
+        containerColor = MaterialTheme.colorScheme.surfaceVariant
     )
 }

@@ -12,8 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -34,10 +33,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import gbcorp.c362.gemvault.pro.R
 import gbcorp.c362.gemvault.pro.data.entity.GMVTOrderEntity
 import gbcorp.c362.gemvault.pro.ui.state.GMVTDataUiState
-import gbcorp.c362.gemvault.pro.ui.theme.BackgroundLight
-import gbcorp.c362.gemvault.pro.ui.theme.Charcoal
-import gbcorp.c362.gemvault.pro.ui.theme.Gold
-import gbcorp.c362.gemvault.pro.ui.theme.MutedGray
 import gbcorp.c362.gemvault.pro.ui.viewmodel.GMVTCheckoutViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -98,20 +93,20 @@ private fun CheckoutContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(BackgroundLight)
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
             .padding(20.dp)
     ) {
         Text(
-            text = "Your Details",
+            text = "Collector Details",
             style = MaterialTheme.typography.headlineMedium,
-            color = Charcoal
+            color = MaterialTheme.colorScheme.onBackground
         )
         Spacer(Modifier.height(4.dp))
         Text(
-            text = "Please fill in your contact information to complete the reservation.",
+            text = "Complete your contact details to secure this acquisition from our vault.",
             style = MaterialTheme.typography.bodyMedium,
-            color = MutedGray
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(Modifier.height(24.dp))
 
@@ -158,22 +153,17 @@ private fun CheckoutContent(
 
         Spacer(Modifier.height(32.dp))
 
-        Button(
+        FilledTonalButton(
             onClick = onPlaceOrderButtonClick,
             enabled = isButtonEnabled,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp),
-            shape = RoundedCornerShape(28.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Charcoal,
-                disabledContainerColor = Charcoal.copy(alpha = 0.4f)
-            )
+                .height(54.dp),
+            shape = RoundedCornerShape(16.dp),
         ) {
             Text(
                 text = stringResource(R.string.button_confirm_order_label).uppercase(),
-                style = MaterialTheme.typography.labelLarge,
-                color = if (isButtonEnabled) Gold else Gold.copy(alpha = 0.5f)
+                style = MaterialTheme.typography.labelLarge
             )
         }
     }
@@ -205,6 +195,7 @@ fun CheckoutTextField(
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         singleLine = true,
+        shape = RoundedCornerShape(12.dp),
         colors = OutlinedTextFieldDefaults.colors(
             focusedContainerColor = MaterialTheme.colorScheme.surface,
             unfocusedContainerColor = MaterialTheme.colorScheme.surface,

@@ -9,5 +9,4 @@ enum class ProductCategory(@field:StringRes val titleRes: Int) {
     NECKLACES(R.string.category_necklaces),
     EARRINGS(R.string.category_earrings),
     BRACELETS(R.string.category_bracelets),
-    MENS(R.string.category_mens),
 }
